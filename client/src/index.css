@@ -1,0 +1,288 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  height: 100vh;
+}
+
+.ql-editor {
+  font-size: 1.05rem;
+}
+
+/* ============================= */
+/* 🌟 Global Styling for Blog 🌟 */
+/* ============================= */
+
+.post-content {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #333;
+  margin: auto;
+}
+
+/* ============================= */
+/* ✨ Headings - Eye Catching ✨ */
+/* ============================= */
+
+.post-content h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 2.5rem 0;
+  padding-bottom: 0.7rem;
+  color: #1e3a8a;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 4px solid #2563eb;
+}
+
+.post-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 2rem 0;
+  color: #2563eb;
+  padding-left: 12px;
+  border-left: 5px solid #2563eb;
+}
+
+.post-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1.5rem 0;
+  color: #374151;
+  position: relative;
+  padding-left: 10px;
+}
+
+.post-content h3::before {
+  content: "🔥";
+  position: absolute;
+  left: -25px;
+  top: 2px;
+  font-size: 1.2rem;
+}
+
+/* ============================= */
+/* 🎨 Paragraphs & Text Effects */
+/* ============================= */
+
+.post-content p {
+  margin-bottom: 1.5rem;
+  color: #444;
+  font-size: 1.1rem;
+}
+
+/* Highlighted text */
+.post-content p mark {
+  background: #ffeb3b;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* ============================= */
+/* 🔗 Links - Stylish Hover Effect */
+/* ============================= */
+
+.post-content a {
+  color: #2563eb;
+  font-weight: bold;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.post-content a:hover {
+  text-decoration: underline;
+  color: #1e40af;
+}
+
+/* ============================= */
+/* ✅ Lists - Better Readability */
+/* ============================= */
+
+.post-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-content ul li {
+  margin-bottom: 0.7rem;
+  font-size: 1.1rem;
+  position: relative;
+  padding-left: 20px;
+  color: #333;
+}
+
+.post-content ul li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #22c55e;
+  font-weight: bold;
+}
+
+/* ============================= */
+/* 💬 Blockquotes - Stand Out */
+/* ============================= */
+
+.post-content blockquote {
+  border-left: 5px solid #2563eb;
+  background: #f0f9ff;
+  padding: 1.5rem;
+  font-style: italic;
+  color: #444;
+  margin: 2rem 0;
+  font-size: 1.2rem;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================= */
+/* 💻 Code Blocks - Stunning Look */
+/* ============================= */
+
+.post-content pre {
+  background: #1e1e1e;
+  color: #e4e4e4;
+  padding: 1.2rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1.8rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post-content code {
+  background: #ffeb3b;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  font-family: "Courier New", monospace;
+  color: #333;
+  font-weight: bold;
+}
+
+/* ============================= */
+/* 📊 Tables - Clean & Stylish */
+/* ============================= */
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 1.1rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-content table th,
+.post-content table td {
+  border: 1px solid #ddd;
+  padding: 1rem;
+}
+
+.post-content table th {
+  background: #2563eb;
+  color: #fff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.post-content table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* ============================= */
+/* 🖼️ Images - Beautiful Presentation */
+/* ============================= */
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease-in-out;
+}
+
+.post-content img:hover {
+  transform: scale(1.05);
+}
+
+/* ============================= */
+/* 🌙 Dark Mode - Sleek & Smooth */
+/* ============================= */
+
+.dark .post-content {
+  color: #ddd;
+}
+
+.dark .post-content h1 {
+  color: #90cdf4;
+  border-bottom: 4px solid #90cdf4;
+}
+
+.dark .post-content h2 {
+  color: #90cdf4;
+  border-left: 5px solid #90cdf4;
+}
+
+.dark .post-content h3 {
+  color: #e2e8f0;
+}
+
+.dark .post-content p {
+  color: #bbb;
+}
+
+.dark .post-content a {
+  color: #90cdf4;
+}
+
+.dark .post-content blockquote {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  border-left: 5px solid #90cdf4;
+}
+
+.dark .post-content pre {
+  background: #2d2d2d;
+}
+
+.dark .post-content table th {
+  background: #90cdf4;
+}
+
+.dark .post-content table td {
+  background: #374151;
+  color: #ddd;
+}
+
+/* ============================= */
+/* 🎉 Final Touch - Making It Pop */
+/* ============================= */
+
+/* Subtle animations */
+.post-content h2,
+.post-content h3,
+.post-content p,
+.post-content ul,
+.post-content pre,
+.post-content blockquote,
+.post-content table {
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
