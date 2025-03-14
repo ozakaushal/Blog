@@ -37,10 +37,10 @@ const SignIn = () => {
         body: JSON.stringify(userData),
       });
       const data = await res.json();
-      if (!data.success) {
+      if (!res.ok) {
         dispatch(signInFailure(data.message));
       }
-      if (data.success) {
+      if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
       }
