@@ -41,7 +41,7 @@ const SignIn = () => {
         dispatch(signInFailure(data.message));
       }
       if (res.ok) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(data.user));
         navigate("/");
       }
     } catch (error) {
