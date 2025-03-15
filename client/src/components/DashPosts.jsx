@@ -14,7 +14,10 @@ const DashPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/posts/all?userId=${currentUser._id}`);
+        const url = currentUser.isAdmin
+          ? "/api/posts/all"
+          : `/api/posts/all?userId=${currentUser._id}`;
+        const res = await fetch(`${url}`);
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.post);

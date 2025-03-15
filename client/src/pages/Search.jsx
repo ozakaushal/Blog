@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PostCard from "../components/PostCard";
+import NoData from "../components/NoData";
 
 const Search = () => {
   const [filters, setFilters] = useState({
@@ -151,9 +152,7 @@ const Search = () => {
           Post results
         </h1>
         <div className="p-7 flex flex-wrap gap-4 justify-start">
-          {!loading && posts.length === 0 && (
-            <p className="text-xl text-gry-500 p-3">No posts found</p>
-          )}
+          {!loading && posts.length === 0 && <NoData></NoData>}
           {loading && <p>Loading ...</p>}
           {!loading &&
             posts.length > 0 &&
