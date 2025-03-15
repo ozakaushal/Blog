@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -8,7 +8,7 @@ import {
   Navbar,
   TextInput,
 } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaMoon, FaSearch, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
@@ -16,9 +16,12 @@ import { signOutSuccess } from "../redux/user/userSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
+  const [searchTerm, setSearchTerm] = useState("");
   const handleSignOut = async () => {
     try {
       const res = await fetch("/api/user/sign-out", {
@@ -32,6 +35,20 @@ const Header = () => {
       console.log(error);
     }
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTerm = urlParams.get("searchTerm");
+    if (searchTerm) {
+      setSearchTerm(searchTerm);
+    }
+  }, [location.search]);
   return (
     <Navbar className="border-b-1">
       <Link
@@ -43,11 +60,13 @@ const Header = () => {
         </span>
         <span>Blog</span>
       </Link>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextInput
           type="text"
           placeholder="Search..."
           rightIcon={FaSearch}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="hidden lg:inline"
         ></TextInput>
       </form>
