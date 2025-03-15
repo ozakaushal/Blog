@@ -42,6 +42,8 @@ const Search = () => {
           setPosts(data.post);
           if (data.post.length < 9) {
             setShowMore(false);
+          } else {
+            setShowMore(true);
           }
         }
       } catch (error) {
@@ -76,6 +78,24 @@ const Search = () => {
     urlParams.set("category", filters.category);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  const handleShowMore = async () => {
+    const startIndex = posts.length;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/posts/all?${searchQuery}`);
+    const data = await res.json();
+    if (res.ok) {
+      setLoading(false);
+      setPosts([...posts, ...data.post]);
+      if (data.post.length < 9) {
+        setShowMore(false);
+      } else {
+        setShowMore(true);
+      }
+    }
   };
 
   return (
@@ -138,6 +158,14 @@ const Search = () => {
           {!loading &&
             posts.length > 0 &&
             posts.map((post) => <PostCard post={post} key={post._id} />)}
+          {showMore && (
+            <button
+              className="text-teal-500 text-lg hover:underline p-7 w-full"
+              onClick={handleShowMore}
+            >
+              Show more
+            </button>
+          )}
         </div>
       </div>
     </div>
