@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { HiOutlineAnnotation } from "react-icons/hi";
 
 const DashSidebar = () => {
   const location = useLocation();
@@ -61,7 +62,7 @@ const DashSidebar = () => {
               Profile
             </Sidebar.Item>
           </Link>
-          {currentUser && currentUser.isAdmin && (
+          {currentUser && (
             <Link to="/dashboard?tab=posts">
               <Sidebar.Item
                 active={tab === "posts"}
@@ -89,7 +90,7 @@ const DashSidebar = () => {
             <Link to="/dashboard?tab=comments">
               <Sidebar.Item
                 active={tab === "comments"}
-                icon={HiUserGroup}
+                icon={HiOutlineAnnotation}
                 labelColor="dark"
                 as="div"
               >

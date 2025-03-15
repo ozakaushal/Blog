@@ -8,6 +8,7 @@ import {
   signInStart,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
+import Loader from "../components/Loader";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,9 @@ const SignIn = () => {
       dispatch(signInFailure(data.message));
     }
   };
-  return (
+  return loading ? (
+    <Loader></Loader>
+  ) : (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="flex p-3 max-w-5xl mx-auto max-sm:flex-col md:items-center gap-5">
         {/* left side */}

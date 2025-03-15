@@ -4,36 +4,42 @@ import { useSelector, useDispatch } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import NoData from "./NoData";
+import Loader from "./Loader";
 
 const DashPosts = () => {
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState(null);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setLoading(true);
         const url = currentUser.isAdmin
           ? "/api/posts/all"
           : `/api/posts/all?userId=${currentUser._id}`;
         const res = await fetch(`${url}`);
         const data = await res.json();
         if (res.ok) {
+          setLoading(false);
           setUserPosts(data.post);
           if (data.post.length < 9) {
             setShowMore(false);
           }
         }
-      } catch (error) {}
+      } catch (error) {
+        setLoading(false);
+      }
     };
-    if (currentUser.isAdmin) {
-      fetchPosts();
-    }
+    fetchPosts();
   }, [currentUser._id]);
 
   const handleShowMore = async () => {
     try {
+      setLoading(true);
       const startIndex = userPosts.length;
       const res = await fetch(
         `/api/posts/all?userId=${currentUser._id}&startIndex=${startIndex}`
@@ -41,6 +47,7 @@ const DashPosts = () => {
       const data = await res.json();
       console.log(data);
       if (res.ok) {
+        setLoading(false);
         setUserPosts((prev) => [...prev, ...data.post]);
         if (data.post.length < 9) {
           setShowMore(false);
@@ -48,6 +55,7 @@ const DashPosts = () => {
         // console.log(userPosts);
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -56,6 +64,7 @@ const DashPosts = () => {
     //postIdToDelete
     setShowModal(false);
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/posts/delete-post/${postIdToDelete}/${currentUser._id}`,
         {
@@ -64,6 +73,7 @@ const DashPosts = () => {
       );
       const data = await res.json();
       if (res.ok) {
+        setLoading(false);
         toast(data.message, {
           type: "success",
         });
@@ -72,19 +82,23 @@ const DashPosts = () => {
           setShowMore(false);
         }
       } else {
+        setLoading(false);
         toast(data.message, {
           type: "error",
         });
         console.log(data.message);
       }
     } catch (error) {
+      setLoading(false);
       toast(error.message, {
         type: "error",
       });
       console.log(error);
     }
   };
-  return (
+  return loading ? (
+    <Loader></Loader>
+  ) : (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && userPosts && userPosts.length > 0 ? (
         <>
@@ -157,7 +171,7 @@ const DashPosts = () => {
           )}
         </>
       ) : (
-        <p>No Posts</p>
+        <NoData></NoData>
       )}
       <Modal
         show={showModal}

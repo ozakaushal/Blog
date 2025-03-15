@@ -5,25 +5,32 @@ import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import NoData from "./NoData";
+import Loader from "./Loader";
 
 const DashUsers = () => {
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`/api/user/get-users`);
         const data = await res.json();
         if (res.ok) {
+          setLoading(false);
           setUsers(data.users);
           if (data.users.length < 9) {
             setShowMore(false);
           }
         }
-      } catch (error) {}
+      } catch (error) {
+        setLoading(false);
+      }
     };
     if (currentUser.isAdmin) {
       fetchUsers();
@@ -32,11 +39,13 @@ const DashUsers = () => {
 
   const handleShowMore = async () => {
     try {
+      setLoading(true);
       const startIndex = users.length;
       const res = await fetch(`/api/user/get-users?startIndex=${startIndex}`);
       const data = await res.json();
       console.log(data);
       if (res.ok) {
+        setLoading(false);
         setUsers((prev) => [...prev, ...data.users]);
         if (data.users.length < 9) {
           setShowMore(false);
@@ -44,6 +53,7 @@ const DashUsers = () => {
         // console.log(users);
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -52,11 +62,13 @@ const DashUsers = () => {
     //postIdToDelete
     setShowModal(false);
     try {
+      setLoading(true);
       const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
         method: "DELETE",
       });
       const data = await res.json();
       if (res.ok) {
+        setLoading(false);
         toast(data.message, {
           type: "success",
         });
@@ -65,19 +77,23 @@ const DashUsers = () => {
           setShowMore(false);
         }
       } else {
+        setLoading(false);
         toast(data.message, {
           type: "error",
         });
         console.log(data.message);
       }
     } catch (error) {
+      setLoading(false);
       toast(error.message, {
         type: "error",
       });
       console.log(error);
     }
   };
-  return (
+  return loading ? (
+    <Loader></Loader>
+  ) : (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && users && users.length > 0 ? (
         <>
@@ -150,7 +166,7 @@ const DashUsers = () => {
           )}
         </>
       ) : (
-        <p>No Users</p>
+        <NoData></NoData>
       )}
       <Modal
         show={showModal}

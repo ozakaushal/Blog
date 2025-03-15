@@ -2,6 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { Link, Links, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import Loader from "../components/Loader";
 
 const SignUp = () => {
   const [userData, setUserData] = useState({
@@ -32,12 +33,12 @@ const SignUp = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
-      const data = res.json();
+      const data = await res.json();
       if (!data.success) {
         return setErrorMessage(data.message);
       }
-      setLoading(false);
       if (res.ok) {
+        setLoading(false);
         navigate("/sign-in");
       }
     } catch (error) {
@@ -45,7 +46,9 @@ const SignUp = () => {
       setLoading(false);
     }
   };
-  return (
+  return loading ? (
+    <Loader></Loader>
+  ) : (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="flex p-3 max-w-5xl mx-auto max-sm:flex-col md:items-center gap-5">
         {/* left side */}

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PostCard from "../components/PostCard";
 import NoData from "../components/NoData";
+import Loader from "../components/Loader";
 
 const Search = () => {
   const [filters, setFilters] = useState({
@@ -99,7 +100,9 @@ const Search = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <Loader></Loader>
+  ) : (
     <div className="flex flex-col md:flex-row">
       <div className="p-5 border-b md:border-r md:min-h-screen border-gray-500 w-[500px] max-md:w-full">
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>

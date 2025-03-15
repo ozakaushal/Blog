@@ -5,19 +5,24 @@ import { toast } from "react-toastify";
 import { HiAnnotation } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { Button, Table } from "flowbite-react";
+import Loader from "./Loader";
 
 const DashboardInfo = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
   const [dashInfo, setDashInfo] = useState();
   useEffect(() => {
     const fetchDashInfo = async () => {
+      setLoading(true);
       const res = await fetch(`/api/dashboard/get-info`);
       if (res) {
         const data = await res.json();
         if (res.ok) {
+          setLoading(false);
           setDashInfo({ ...data });
           //console.log(dashInfo);
         } else {
+          setLoading(false);
           toast("Unable to fetch the data, please try again later", {
             type: "error",
           });
@@ -26,7 +31,9 @@ const DashboardInfo = () => {
     };
     fetchDashInfo();
   }, [currentUser]);
-  return (
+  return loading ? (
+    <Loader></Loader>
+  ) : (
     <div className="p-3 px-5 md:mx-auto">
       <div className="flex flex-col sm:flex-row gap-4 justify-center px-3">
         {currentUser && currentUser.isAdmin && (

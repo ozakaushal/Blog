@@ -5,6 +5,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import NoData from "./NoData";
 
 const DashComments = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -142,7 +143,7 @@ const DashComments = () => {
           )}
         </>
       ) : (
-        <p>No Comments</p>
+        <NoData></NoData>
       )}
       <Modal
         show={showModal}
